@@ -4,6 +4,9 @@ const newQuoteInput = newQuoteForm.querySelector('#new-quote')
 const quoteAuthorInput = newQuoteForm.querySelector('#author')
 // ***RENDER***
 const quoteList = document.querySelector('#quote-list')
+const sortByAuthorBtn = document.querySelector('#sort-by-author')
+
+let sortByAuthor = false
 
 newQuoteForm.addEventListener('submit', event => createQuoteAndRender(event))
 
@@ -125,6 +128,36 @@ const editQuoteAndRender = (event, parentEl, editForm, quoteToUpdate) => {
 const deleteQuoteAndRender = (elementToDelete, quoteToDelete) => {
   quoteList.removeChild(elementToDelete)
   deleteQuote(quoteToDelete)
+}
+
+sortByAuthorBtn.addEventListener('click', () => sortQuotesByAuthorAndRender())
+
+const sortQuotesByAuthorAndRender = () => {
+  sortByAuthor = !sortByAuthor
+
+  if(sortByAuthor) {
+    sortByAuthorBtn.innerText = "Sort By Author: ON"
+    getQuotes()
+      .then(quotes => {
+        quotesSorted = quotes.sort(function(a, b) {
+          let nameA = a.author.toUpperCase()
+          let nameB = b.author.toUpperCase()
+  
+          if(nameA < nameB) {return -1}
+          if(nameA > nameB) {return 1}
+  
+          return 0
+        })
+        quoteList.innerHTML = ''
+        renderQuotes(quotesSorted)
+      })
+  } else {
+    sortByAuthorBtn.innerText = "Sort By Author: OFF"
+    quoteList.innerHTML = ''
+    getQuotes()
+      .then(renderQuotes)
+  }
+  
 }
 
 getQuotes()
