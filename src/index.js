@@ -5,6 +5,22 @@ const quoteAuthorInput = newQuoteForm.querySelector('#author')
 // ***RENDER***
 const quoteList = document.querySelector('#quote-list')
 
+
+newQuoteForm.addEventListener('submit', event => createQuoteAndRender(event))
+
+const createQuoteAndRender = event => {
+  event.preventDefault()
+
+  const quoteToCreate = {
+    quote: newQuoteInput.value,
+    author: quoteAuthorInput.value,
+    likes: 0
+  }
+
+  createQuote(quoteToCreate)
+    .then(renderQuote)
+}
+
 const renderQuotes = quotes => {
   quotes.forEach(renderQuote)
 }

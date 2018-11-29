@@ -35,6 +35,18 @@
       "quote": "Perseverance is the hard work you do after you get tired of doing the hard work you already did.",
       "likes": 1,
       "author": "Newt Gingrich"
+    },
+    {
+      "quote": null,
+      "author": {},
+      "likes": 0,
+      "id": 7
+    },
+    {
+      "quote": "The World is vast and waiting.",
+      "author": "Steven Rico",
+      "likes": 3,
+      "id": 8
     }
   ]
 }
