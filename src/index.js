@@ -1,2 +1,8 @@
-// It might be a good idea to add event listener to make sure this file 
-// only runs after the DOM has finshed loading.
+// ***FORM***
+const newQuoteForm = document.querySelector('#new-quote-form')
+const newQuoteInput = newQuoteForm.querySelector('#new-quote')
+const quoteAuthorInput = newQuoteForm.querySelector('#author')
+// ***RENDER***
+const quoteList = document.querySelector('#quote-list')
+
+
