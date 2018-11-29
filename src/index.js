@@ -37,6 +37,8 @@ const renderQuote = quote => {
   `
   quoteList.appendChild(quoteListEl)
 
+  createEditQuoteForm(quoteListEl, quote)
+
   const blockquoteEl = quoteListEl.querySelector('blockquote')
 
   const likeBtn = document.createElement('button')
@@ -46,9 +48,10 @@ const renderQuote = quote => {
   likeBtn.addEventListener('click', () => updateLikesAndRender(likeBtn, quote))
 
   const editBtn = document.createElement('button')
-  editBtn.className = 'btn-success'
+  editBtn.className = 'btn-primary'
   editBtn.innerText = 'Edit'
   blockquoteEl.appendChild(editBtn)
+  editBtn.addEventListener('click', () => toggleEditForm(quoteListEl))
 
   const deleteBtn = document.createElement('button')
   deleteBtn.className = 'btn-danger'
@@ -56,13 +59,66 @@ const renderQuote = quote => {
   blockquoteEl.appendChild(deleteBtn)
 }
 
-const updateLikesAndRender = (likeBtn, quote) => {
-  updateLikes = {
-    likes: ++quote.likes
+const createEditQuoteForm = (quoteListEl, quote) => {
+  const editQuoteForm = document.createElement('form')
+  editQuoteForm.id = "edit-quote-form"
+  editQuoteForm.style.display = 'none'
+  editQuoteForm.innerHTML = `
+  <div class="form-group">
+    <label for="edit-quote">Edit Quote</label>
+    <input type="text" class="form-control" id="edit-quote" value="${quote.quote}">
+  </div>
+  <div class="form-group">
+    <label for="edit-author">Edit Author</label>
+    <input type="text" class="form-control" id="edit-author" value="${quote.author}">
+  </div>
+  <button type="submit" class="btn btn-primary">Edit</button>
+  `
+  quoteListEl.appendChild(editQuoteForm)
+
+  editQuoteForm.addEventListener('submit', event => editQuoteAndRender(event, quoteListEl, editQuoteForm, quote))
+}
+
+const toggleEditForm = parentEl => {
+  const editForm = parentEl.querySelector('#edit-quote-form')
+  if(editForm.style.display === "none") {
+    editForm.style.display = "block"
+  } else {
+    editForm.style.display = "none"
   }
-  updateQuote(quote, updateLikes)
+}
+
+const updateLikesAndRender = (elToUpdate, quoteToUpdate) => {
+  updateLikes = {
+    likes: ++quoteToUpdate.likes
+  }
+  
+  updateQuote(quoteToUpdate, updateLikes)
     .then(updatedQuote => {
-      likeBtn.innerHTML = `Likes: <span>${updatedQuote.likes}</span>`
+      elToUpdate.innerHTML = `Likes: <span>${updatedQuote.likes}</span>`
+    })
+}
+
+const editQuoteAndRender = (event, parentEl, editForm, quoteToUpdate) => {
+  event.preventDefault()
+  
+  const quoteInput = editForm.querySelector('#edit-quote')
+  const authorInput = editForm.querySelector('#edit-author')
+
+  const updateContent = {
+    quote: quoteInput.value,
+    author: authorInput.value
+  }
+
+  updateQuote(quoteToUpdate, updateContent)
+    .then(updatedQuote => {
+      const paragraphEl = parentEl.querySelector('p')
+      const footerEl = parentEl.querySelector('footer')
+
+      paragraphEl.innerText = updatedQuote.quote
+      footerEl.innerText = updatedQuote.author
+
+      toggleEditForm(parentEl)
     })
 }
 
