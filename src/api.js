@@ -19,3 +19,6 @@ const updateQuote = (quoteToUpdate, attrToUpdate) =>
     body: JSON.stringify(attrToUpdate)
   })
     .then(resp => resp.json())
+
+const deleteQuote = quoteToDelete =>
+  fetch(quotesUrl + '/' + quoteToDelete.id, {method: 'DELETE'})

@@ -5,7 +5,6 @@ const quoteAuthorInput = newQuoteForm.querySelector('#author')
 // ***RENDER***
 const quoteList = document.querySelector('#quote-list')
 
-
 newQuoteForm.addEventListener('submit', event => createQuoteAndRender(event))
 
 const createQuoteAndRender = event => {
@@ -57,6 +56,7 @@ const renderQuote = quote => {
   deleteBtn.className = 'btn-danger'
   deleteBtn.innerText = 'Delete'
   blockquoteEl.appendChild(deleteBtn)
+  deleteBtn.addEventListener('click', () => deleteQuoteAndRender(quoteListEl, quote))
 }
 
 const createEditQuoteForm = (quoteListEl, quote) => {
@@ -92,7 +92,7 @@ const updateLikesAndRender = (elToUpdate, quoteToUpdate) => {
   updateLikes = {
     likes: ++quoteToUpdate.likes
   }
-  
+
   updateQuote(quoteToUpdate, updateLikes)
     .then(updatedQuote => {
       elToUpdate.innerHTML = `Likes: <span>${updatedQuote.likes}</span>`
@@ -120,6 +120,11 @@ const editQuoteAndRender = (event, parentEl, editForm, quoteToUpdate) => {
 
       toggleEditForm(parentEl)
     })
+}
+
+const deleteQuoteAndRender = (elementToDelete, quoteToDelete) => {
+  quoteList.removeChild(elementToDelete)
+  deleteQuote(quoteToDelete)
 }
 
 getQuotes()
