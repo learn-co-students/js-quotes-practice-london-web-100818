@@ -27,18 +27,27 @@ const renderQuote = quote => {
   likeBtn.className = 'btn-success'
   likeBtn.innerHTML = `Likes: <span>${quote.likes}</span>`
   blockquoteEl.appendChild(likeBtn)
-
+  likeBtn.addEventListener('click', () => updateLikesAndRender(likeBtn, quote))
 
   const editBtn = document.createElement('button')
   editBtn.className = 'btn-success'
   editBtn.innerText = 'Edit'
   blockquoteEl.appendChild(editBtn)
 
-
   const deleteBtn = document.createElement('button')
   deleteBtn.className = 'btn-danger'
   deleteBtn.innerText = 'Delete'
   blockquoteEl.appendChild(deleteBtn)
+}
+
+const updateLikesAndRender = (likeBtn, quote) => {
+  updateLikes = {
+    likes: ++quote.likes
+  }
+  updateQuote(quote, updateLikes)
+    .then(updatedQuote => {
+      likeBtn.innerHTML = `Likes: <span>${updatedQuote.likes}</span>`
+    })
 }
 
 getQuotes()
