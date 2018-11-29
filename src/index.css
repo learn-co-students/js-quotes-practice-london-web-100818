@@ -1,3 +1,11 @@
 #quote-list {
   padding: 20px;
 }
+
+.quote-card {
+  margin-top: 15px;
+}
+
+button {
+  margin-right: 3px;
+}
